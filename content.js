@@ -1,42 +1,98 @@
 // content.js
 let inputBuffer = '';
 let isEnabled = false;
+let currentSearchTerm = '';
+let currentMatches = [];
+let currentMatchIndex = -1;
 const shortcuts = {
-  'fw': 'Winner'
+  'fw': { text: 'Winner', caseSensitive: false },
+  'fa': { text: 'Annotated Response', caseSensitive: true }
 };
 
-function findAndHighlightText(text) {
-  const range = document.createRange();
-  const selection = window.getSelection();
-  selection.removeAllRanges();
-
+function findAllMatches(text, caseSensitive) {
+  const matches = [];
+  const regex = new RegExp(text, caseSensitive ? 'g' : 'gi');
   const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  
   let node;
   while (node = treeWalker.nextNode()) {
-    const index = node.textContent.toLowerCase().indexOf(text.toLowerCase());
-    if (index >= 0) {
-      range.setStart(node, index);
-      range.setEnd(node, index + text.length);
-      selection.addRange(range);
-      
-      // Scroll the element into view
-      const element = range.commonAncestorContainer.parentElement;
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      
-      // Highlight the text
-      const span = document.createElement('span');
-      span.style.backgroundColor = 'yellow';
-      range.surroundContents(span);
-      
-      break;
+    let match;
+    while (match = regex.exec(node.textContent)) {
+      matches.push({
+        node: node,
+        index: match.index,
+        text: match[0]
+      });
     }
   }
+  
+  return matches;
+}
+
+function highlightMatch(match) {
+  const range = document.createRange();
+  range.setStart(match.node, match.index);
+  range.setEnd(match.node, match.index + match.text.length);
+  
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+  
+  // Scroll the element into view
+  const element = range.commonAncestorContainer.parentElement;
+  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  
+  // Highlight the text
+  const span = document.createElement('span');
+  span.style.backgroundColor = 'yellow';
+  range.surroundContents(span);
+}
+
+function findAndHighlightText(text, caseSensitive) {
+  // Remove previous highlights
+  document.querySelectorAll('span[style="background-color: yellow;"]').forEach(el => {
+    el.outerHTML = el.innerHTML;
+  });
+
+  currentSearchTerm = text;
+  currentMatches = findAllMatches(text, caseSensitive);
+  currentMatchIndex = -1;
+  
+  if (currentMatches.length > 0) {
+    findNextMatch();
+  } else {
+    console.log('No matches found');
+  }
+}
+
+function findNextMatch() {
+  if (currentMatches.length === 0) return;
+  
+  currentMatchIndex = (currentMatchIndex + 1) % currentMatches.length;
+  highlightMatch(currentMatches[currentMatchIndex]);
+}
+
+function cancelSearch() {
+  currentSearchTerm = '';
+  currentMatches = [];
+  currentMatchIndex = -1;
+  
+  // Remove all highlights
+  document.querySelectorAll('span[style="background-color: yellow;"]').forEach(el => {
+    el.outerHTML = el.innerHTML;
+  });
+  
+  console.log('Search cancelled');
 }
 
 document.addEventListener('keydown', (event) => {
   if (!isEnabled) return;
   
-  if (event.key.length === 1) {
+  if (event.key === 'n') {
+    findNextMatch();
+  } else if (event.key === 'q') {
+    cancelSearch();
+  } else if (event.key.length === 1) {
     inputBuffer += event.key.toLowerCase();
     if (inputBuffer.length > 2) {
       inputBuffer = inputBuffer.slice(-2);
@@ -44,7 +100,7 @@ document.addEventListener('keydown', (event) => {
     
     const matchedShortcut = shortcuts[inputBuffer];
     if (matchedShortcut) {
-      findAndHighlightText(matchedShortcut);
+      findAndHighlightText(matchedShortcut.text, matchedShortcut.caseSensitive);
       inputBuffer = ''; // Reset the input buffer after a match
     }
   }
@@ -52,7 +108,7 @@ document.addEventListener('keydown', (event) => {
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'findText') {
-    findAndHighlightText(request.text);
+    findAndHighlightText(request.text, request.caseSensitive);
   } else if (request.action === 'toggleEnabled') {
     isEnabled = request.enabled;
     console.log('Extension ' + (isEnabled ? 'enabled' : 'disabled'));
