@@ -1,69 +1,71 @@
-<!-- popup.html -->
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Prompt Navigator</title>
-  <style>
-    body {
-      width: 300px;
-      padding: 10px;
-    }
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 34px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-  </style>
-</head>
-<body>
-  <h1>Prompt Navigator</h1>
-  <p>Enable/Disable extension:</p>
-  <label class="switch">
-    <input type="checkbox" id="enableToggle">
-    <span class="slider"></span>
-  </label>
-  <p>When enabled, use the following shortcuts:</p>
-  <ul>
-    <li><strong>fw</strong>: Find "Winner"</li>
-    <li><strong>fa</strong>: Find "Annotated Response" (case-sensitive)</li>
-    <li><strong>fc1</strong> to <strong>fc5</strong>: Find "[Turn 1] [Optional]" to "[Turn 5] [Optional]"</li>
-    <li><strong>n</strong>: Find next match</li>
-  </ul>
-  <p>The search will activate immediately after typing the shortcut.</p>
-  <script src="popup.js"></script>
-</body>
-</html>
+
+
+    <!-- popup.html -->
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Prompt Navigator</title>
+      <style>
+        body {
+          width: 300px;
+          padding: 10px;
+        }
+        .switch {
+          position: relative;
+          display: inline-block;
+          width: 60px;
+          height: 34px;
+        }
+        .switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        .slider {
+          position: absolute;
+          cursor: pointer;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-color: #ccc;
+          transition: .4s;
+          border-radius: 34px;
+        }
+        .slider:before {
+          position: absolute;
+          content: "";
+          height: 26px;
+          width: 26px;
+          left: 4px;
+          bottom: 4px;
+          background-color: white;
+          transition: .4s;
+          border-radius: 50%;
+        }
+        input:checked + .slider {
+          background-color: #2196F3;
+        }
+        input:checked + .slider:before {
+          transform: translateX(26px);
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Prompt Navigator</h1>
+      <p>Enable/Disable extension:</p>
+      <label class="switch">
+        <input type="checkbox" id="enableToggle">
+        <span class="slider"></span>
+      </label>
+      <p>When enabled, use the following shortcuts:</p>
+      <ul>
+        <li><strong>fw</strong>: <strong>F</strong>ind <strong>W</strong>inner Response</li>
+        <li><strong>fa</strong>: <strong>F</strong>ind <strong>A</strong>nnotated Response</li>
+        <li><strong>n</strong>: Cycles to the <strong>N</strong>ext match</li>
+        <li><strong>fc1</strong> to <strong>fc5</strong>: <strong>F</strong>ind <strong>C</strong>omments section for each turn</li>
+      </ul>
+      <p>The search will activate immediately after typing the shortcut.</p>
+      <script src="popup.js"></script>
+    </body>
+    </html>
