@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Text Finder</title>
+  <title>Prompt Navigator</title>
   <style>
     body {
       width: 300px;
@@ -50,15 +50,18 @@
   </style>
 </head>
 <body>
-  <h1>Text Finder</h1>
+  <h1>Prompt Navigator</h1>
   <p>Enable/Disable extension:</p>
   <label class="switch">
     <input type="checkbox" id="enableToggle">
     <span class="slider"></span>
   </label>
-  <p>When enabled, use the following shortcut to find text:</p>
+  <p>When enabled, use the following shortcuts:</p>
   <ul>
     <li><strong>fw</strong>: Find "Winner"</li>
+    <li><strong>fa</strong>: Find "Annotated Response" (case-sensitive)</li>
+    <li><strong>n</strong>: Find next match</li>
+    <li><strong>q</strong>: Cancel current search</li>
   </ul>
   <p>The search will activate immediately after typing the shortcut.</p>
   <script src="popup.js"></script>
