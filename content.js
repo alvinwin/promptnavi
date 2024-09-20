@@ -6,12 +6,17 @@ let currentMatches = [];
 let currentMatchIndex = -1;
 const shortcuts = {
   'fw': { text: 'Winner', caseSensitive: false },
-  'fa': { text: 'Annotated Response', caseSensitive: true }
+  'fa': { text: 'Annotated Response', caseSensitive: true },
+  'fc1': { text: '[Turn 1][Optional]', caseSensitive: true },
+  'fc2': { text: '[Turn 2][Optional]', caseSensitive: true },
+  'fc3': { text: '[Turn 3][Optional]', caseSensitive: true },
+  'fc4': { text: '[Turn 4][Optional]', caseSensitive: true },
+  'fc5': { text: '[Turn 5][Optional]', caseSensitive: true }
 };
 
 function findAllMatches(text, caseSensitive) {
   const matches = [];
-  const regex = new RegExp(text, caseSensitive ? 'g' : 'gi');
+  const regex = new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), caseSensitive ? 'g' : 'gi');
   const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
   
   let node;
@@ -94,8 +99,8 @@ document.addEventListener('keydown', (event) => {
     cancelSearch();
   } else if (event.key.length === 1) {
     inputBuffer += event.key.toLowerCase();
-    if (inputBuffer.length > 2) {
-      inputBuffer = inputBuffer.slice(-2);
+    if (inputBuffer.length > 3) {
+      inputBuffer = inputBuffer.slice(-3);
     }
     
     const matchedShortcut = shortcuts[inputBuffer];
