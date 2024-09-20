@@ -7,11 +7,11 @@ let currentMatchIndex = -1;
 const shortcuts = {
   'fw': { text: 'Winner', caseSensitive: false },
   'fa': { text: 'Annotated Response', caseSensitive: true },
-  'fc1': { text: '[Turn 1][Optional]', caseSensitive: true },
-  'fc2': { text: '[Turn 2][Optional]', caseSensitive: true },
-  'fc3': { text: '[Turn 3][Optional]', caseSensitive: true },
-  'fc4': { text: '[Turn 4][Optional]', caseSensitive: true },
-  'fc5': { text: '[Turn 5][Optional]', caseSensitive: true }
+  'fc1': { text: '[Turn 1] [Optional]', caseSensitive: true },
+  'fc2': { text: '[Turn 2] [Optional]', caseSensitive: true },
+  'fc3': { text: '[Turn 3] [Optional]', caseSensitive: true },
+  'fc4': { text: '[Turn 4] [Optional]', caseSensitive: true },
+  'fc5': { text: '[Turn 5] [Optional]', caseSensitive: true }
 };
 
 function findAllMatches(text, caseSensitive) {
