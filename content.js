@@ -34,8 +34,8 @@ function findAllMatches(text, caseSensitive) {
   // Sort matches by their position in the document
   matches.sort((a, b) => {
     const posA = a.node.compareDocumentPosition(b.node);
-    if (posA & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
-    if (posA & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+    if (posA & Node.DOCUMENT_POSITION_FOLLOWING) return 1;
+    if (posA & Node.DOCUMENT_POSITION_PRECEDING) return -1;
     return a.index - b.index;
   });
 
