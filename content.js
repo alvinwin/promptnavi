@@ -5,7 +5,7 @@ let currentSearchTerm = '';
 let currentMatches = [];
 let currentMatchIndex = -1;
 const shortcuts = {
-  'fw': { text: 'Winner', caseSensitive: false },
+  'fw': { text: 'Winner', caseSensitive: true },
   'fa': { text: 'Annotated Response', caseSensitive: true },
   'fc1': { text: '[Turn 1] [Optional] Please provide comments for any issues identified.', caseSensitive: true },
   'fc2': { text: '[Turn 2] [Optional] Please provide comments for any issues identified.', caseSensitive: true },
