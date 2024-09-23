@@ -31,10 +31,23 @@ function findAllMatches(text, caseSensitive) {
     }
   }
 
+  // Sort matches by their position in the document
+  matches.sort((a, b) => {
+    const posA = a.node.compareDocumentPosition(b.node);
+    if (posA & Node.DOCUMENT_POSITION_FOLLOWING) return -1;
+    if (posA & Node.DOCUMENT_POSITION_PRECEDING) return 1;
+    return a.index - b.index;
+  });
+
   return matches;
 }
 
 function highlightMatch(match) {
+  // Remove previous highlights
+  document.querySelectorAll('span[style="background-color: yellow;"]').forEach(el => {
+    el.outerHTML = el.innerHTML;
+  });
+
   const range = document.createRange();
   range.setStart(match.node, match.index);
   range.setEnd(match.node, match.index + match.text.length);
@@ -54,11 +67,6 @@ function highlightMatch(match) {
 }
 
 function findAndHighlightText(text, caseSensitive) {
-  // Remove previous highlights
-  document.querySelectorAll('span[style="background-color: yellow;"]').forEach(el => {
-    el.outerHTML = el.innerHTML;
-  });
-
   currentSearchTerm = text;
   currentMatches = findAllMatches(text, caseSensitive);
   currentMatchIndex = -1;
@@ -72,9 +80,24 @@ function findAndHighlightText(text, caseSensitive) {
 
 function findNextMatch() {
   if (currentMatches.length === 0) return;
-
   currentMatchIndex = (currentMatchIndex + 1) % currentMatches.length;
   highlightMatch(currentMatches[currentMatchIndex]);
+}
+
+function findPreviousMatch() {
+  if (currentMatches.length === 0) return;
+  currentMatchIndex = (currentMatchIndex - 1 + currentMatches.length) % currentMatches.length;
+  highlightMatch(currentMatches[currentMatchIndex]);
+}
+
+function cancelSearch() {
+  // Remove all highlights
+  document.querySelectorAll('span[style="background-color: yellow;"]').forEach(el => {
+    el.outerHTML = el.innerHTML;
+  });
+  currentSearchTerm = '';
+  currentMatches = [];
+  currentMatchIndex = -1;
 }
 
 document.addEventListener('keydown', (event) => {
@@ -82,6 +105,8 @@ document.addEventListener('keydown', (event) => {
 
   if (event.key === 'n') {
     findNextMatch();
+  } else if (event.key === 'b') {
+    findPreviousMatch();
   } else if (event.key === 'q') {
     cancelSearch();
   } else if (event.key.length === 1) {
@@ -89,7 +114,6 @@ document.addEventListener('keydown', (event) => {
     if (inputBuffer.length > 3) {
       inputBuffer = inputBuffer.slice(-3);
     }
-
     const matchedShortcut = shortcuts[inputBuffer];
     if (matchedShortcut) {
       findAndHighlightText(matchedShortcut.text, matchedShortcut.caseSensitive);
