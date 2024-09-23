@@ -21,6 +21,6 @@
 *The above instructions can be found in the extension menu after clicking on the extensions icon on the top right*
 
 ## Notes
-- Searches will immediately occur, upon completing the final keystroke for the respective shortcut. Additional input is unnecessary.
+- Searches will immediately occur upon completing the final keystroke for the respective shortcut. Additional input is unnecessary.
 - Functionality is enabled for all webpages, so it may be a good idea to disable the extension outside of review queues
 - Feel free to provide suggestions and feedback
