@@ -17,6 +17,7 @@
   - **fa**: **F**ind **A**nnotated Response
   - **n**: Cycles to the **N**ext match
   - **fc1** to **fc5**: **F**ind **C**omments section for each turn
+ 
 *The above instructions can be found in the extension menu after clicking on the extensions icon on the top right*
 
 ## Notes
